@@ -1,5 +1,5 @@
 build: bin
-	tcc src/lex.c -o bin/lex.exe
+	tcc src/pltc.c -o bin/pltc.exe
 
 init:
 	mkdir bin

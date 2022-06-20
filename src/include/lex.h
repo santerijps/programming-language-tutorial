@@ -1,37 +1,45 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "include/token.h"
-#include "include/validators.h"
-#include "include/stream.h"
+#ifndef _INC_STDIO
+  #include <stdio.h>
+#endif
 
-char* read_token_until_invalid(int(char));
-char* read_string_token();
-char* read_single_char_token();
+#ifndef _INC_STDLIB
+  #include <stdlib.h>
+#endif
 
-FILE *stream;
+#ifndef _INC_STRING
+  #include <string.h>
+#endif
 
-int main(int argc, char** argv) {
+#include "token.h"
+#include "validators.h"
+#include "stream.h"
 
+typedef struct {
+  TOKEN *token_list;
+  size_t token_count;
+  int exit_code;
+} LEX_RESULT;
+
+char* _read_token_until_invalid(FILE*, int(char));
+char* _read_string_token(FILE*);
+char* _read_single_char_token(FILE*);
+
+LEX_RESULT lex_file(char *src_file) {
+
+  FILE *stream;
+  LEX_RESULT result;
   size_t n, token_list_size = 100, token_list_index = 0;
-  char c, *token_value, *src_file, *dst_file = NULL;
+  char c, *token_value;
   TOKEN_TYPE token_type;
-  TOKEN *token_list = (TOKEN*) calloc(token_list_size, sizeof(TOKEN));
 
-  if (argc == 1) {
-    printf("Please provide a source file!\n");
-    return 1;
-  }
-
-  src_file = argv[1];
-
-  if (argc >= 3) {
-    dst_file = argv[2];
-  }
+  result.token_list = (TOKEN*) calloc(token_list_size, sizeof(TOKEN));
+  result.token_count = 0;
+  result.exit_code = 0;
 
   if ((stream = fopen(src_file, "r")) == NULL) {
     printf("Failed to open source file!\n");
-    return 1;
+    result.exit_code = 1;
+    return result;
   }
 
   // Begin reading single characters from the file
@@ -42,143 +50,124 @@ int main(int argc, char** argv) {
 
     // Whitespaces
     if (char_is_whitespace(c)) {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_WHITESPACE;
     }
 
     // Words
     else if (char_is_alpha(c) || c == '_') {
-      token_value = read_token_until_invalid(char_is_word);
+      token_value = _read_token_until_invalid(stream, char_is_word);
       token_type = T_WORD;
     }
 
     // Numbers
     else if (char_is_digit(c)) {
-      token_value = read_token_until_invalid(char_is_number);
+      token_value = _read_token_until_invalid(stream, char_is_number);
       token_type = T_NUM;
     }
 
     // Equals sign, one
     else if (c == '=') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_EQ;
     }
 
     // Less than sign, one
     else if (c == '<') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_LT;
     }
 
     // Greater than sign, one
     else if (c == '>') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_GT;
     }
 
     // Left parenthesis, one
     else if (c == '(') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_LPAREN;
     }
 
     // Right parenthesis, one
     else if (c == ')') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_RPAREN;
     }
 
     // Left bracket, one
     else if (c == '[') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_LBRACKET;
     }
 
     // Right bracket, one
     else if (c == ']') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_RBRACKET;
     }
 
     // Left brace, one
     else if (c == '{') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_LBRACE;
     }
 
     // Right brace, one
     else if (c == '}') {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_RBRACE;
     }
 
     // Operators
     else if (char_is_operator(c)) {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_OPERATOR;
     }
 
     // Punctuation
     else if (char_is_punctuation(c)) {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_PUNCTUATION;
     }
 
     // Symbols
     else if (char_is_symbol(c)) {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
       token_type = T_SYMBOL;
     }
 
     // Strings (inside quotes)
     else if (c == '"') {
-      token_value = read_string_token();
+      token_value = _read_string_token(stream);
       token_type = T_STR;
     }
 
     if (token_type == T_UNDEFINED) {
-      token_value = read_single_char_token();
+      token_value = _read_single_char_token(stream);
     }
 
     TOKEN token = token_new(token_type,
       (char*) malloc(sizeof(char) * strlen(token_value)));
     strcpy(token.value, token_value);
-    token_list[token_list_index++] = token;
+    result.token_list[result.token_count++] = token;
     free(token_value);
+
+    if (result.token_count == token_list_size) {
+      token_list_size *= 2;
+      result.token_list = (TOKEN*) realloc(result.token_list, token_list_size);
+    }
 
   }
 
   if (fclose(stream)) {
     printf("Could not close the file successfully!\n");
-    return 1;
+    result.exit_code = 1;
+    return result;
   }
 
-  if (dst_file != NULL) {
-
-    if ((stream = fopen(dst_file, "w")) == NULL) {
-      printf("Could not open %s file!\n", dst_file);
-      return 1;
-    }
-
-    printf("Wrote %d tokens to %s\n",
-      fwrite(token_list, sizeof(TOKEN), token_list_index, stream),
-      dst_file
-    );
-
-    if (fclose(stream)) {
-      printf("Could not close %s successfully!\n", dst_file);
-      return 1;
-    }
-
-  }
-
-  // Free up the space taken up by the dynamically memory allocated strings
-  for (int i = 0; i < token_list_index; i++) {
-    token_print(token_list[i]);
-    free(token_list[i].value);
-  }
-
-  return 0;
+  return result;
 }
 
 
@@ -186,7 +175,7 @@ int main(int argc, char** argv) {
  * Generic function for reading tokens.
  * Stops reading once the char_validator function returns false or EOF.
 **/
-char* read_token_until_invalid(int char_validator(char)) {
+char* _read_token_until_invalid(FILE *stream, int char_validator(char)) {
 
   unsigned int i = 0, size = 10;
   char c, *token = (char*) malloc(sizeof(char) * size);
@@ -222,7 +211,7 @@ char* read_token_until_invalid(int char_validator(char)) {
 /**
  * Reads a token with type T_STR.
 **/
-char* read_string_token() {
+char* _read_string_token(FILE *stream) {
 
   unsigned int i = 0, size = 10, backslash = 0;
   char c, *token = (char*) malloc(sizeof(char) * size);
@@ -264,7 +253,7 @@ char* read_string_token() {
  * Allocates memory for a one-character string.
  * Appends a null terminator.
 **/
-char* read_single_char_token() {
+char* _read_single_char_token(FILE *stream) {
   char *token = (char*) malloc(sizeof(char) * 2);
   token[0] = fgetc(stream);
   token[1] = '\0';
