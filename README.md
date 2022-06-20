@@ -1,4 +1,4 @@
-# Creating a programming language from scratch
+# `pltc`: Creating a programming language from scratch
 
 This project is a tutorial for myself to learn how to create my own programming language. I decided to write all the code in C. Below is a list of things that I would like to try:
 
@@ -7,7 +7,7 @@ This project is a tutorial for myself to learn how to create my own programming 
 - an interpreter
 - produce native executables
 
-The development compiler is [Tiny C Compiler aka. `tcc`](https://bellard.org/tcc/). It compiles code really fast.
+The development compiler is [Tiny C Compiler aka. `tcc`](https://bellard.org/tcc/). It compiles code really fast. The name of my programming compiler is `pltc`, which simply stands for _Programming Language Tutorial Compiler_.
 
 ## Getting started
 
