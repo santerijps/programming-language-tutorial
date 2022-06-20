@@ -40,12 +40,12 @@ With `tcc`:
 ```sh
 cd programming-language-tutorial
 mkdir bin
-tcc src/lex.c -o bin/lex
+tcc src/pltc.c -o bin/pltc
 ```
 
 ### Try the examples
 
 ```sh
 cd programming-language-tutorial
-bin/lex examples/example.py
+bin/pltc examples/example.py
 ```
