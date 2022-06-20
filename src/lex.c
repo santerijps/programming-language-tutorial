@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     }
 
     // Words
-    else if (char_is_alpha(c)) {
+    else if (char_is_alpha(c) || c == '_') {
       token_value = read_token_until_invalid(char_is_word);
       token_type = T_WORD;
     }
