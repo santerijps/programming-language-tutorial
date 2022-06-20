@@ -1,6 +1,6 @@
 # Creating a programming language from scratch
 
-This project is a tutorial for myself to learn how to create your own programming language. Below is a list of things that I would like to try:
+This project is a tutorial for myself to learn how to create my own programming language. I decided to write all the code in C. Below is a list of things that I would like to try:
 
 - a lexer
 - a parser
