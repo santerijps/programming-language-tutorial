@@ -48,7 +48,9 @@
   /**
    * Creates a new token.
   */
-  inline TOKEN token_new(TOKEN_TYPE type, char *value);
+  TOKEN token_new(TOKEN_TYPE type, char *value);
+
+  void token_destroy(TOKEN *t);
 
   /**
    * Prints the specified token.

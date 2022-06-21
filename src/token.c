@@ -29,6 +29,10 @@ TOKEN token_new(TOKEN_TYPE type, char *value) {
   return t;
 }
 
+void token_destroy(TOKEN *t) {
+  free(t->value);
+}
+
 void token_print(TOKEN t) {
   printf("TOKEN{ %s, '", token_type_name(t.type));
   for (int i = 0; i < t.value[i] != '\0'; i++) {
