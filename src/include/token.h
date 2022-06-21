@@ -14,6 +14,7 @@
    * Enumerator type for different types of tokens.
   */
   typedef enum TOKEN_TYPE {
+    T_EOF,
     T_UNDEFINED,
     T_WHITESPACE,
     T_WORD,
@@ -53,5 +54,14 @@
    * Prints the specified token.
   */
   void token_print(TOKEN t);
+
+  typedef struct TOKEN_ITER {
+    size_t cursor, size;
+    TOKEN *items;
+  } TOKEN_ITER;
+
+  int token_iter_has_next(TOKEN_ITER *iter);
+  TOKEN token_iter_next(TOKEN_ITER *iter);
+  TOKEN token_iter_peek(TOKEN_ITER *iter);
 
 #endif

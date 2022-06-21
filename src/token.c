@@ -51,3 +51,23 @@ void token_print(TOKEN t) {
   }
   printf("' }\n");
 }
+
+int token_iter_has_next(TOKEN_ITER *iter) {
+  return (iter->cursor) < (iter->size);
+}
+
+TOKEN token_iter_next(TOKEN_ITER *iter) {
+  return (iter->items)[(iter->cursor)++];
+}
+
+TOKEN token_iter_peek(TOKEN_ITER *iter) {
+  TOKEN token;
+  if (token_iter_has_next(iter)) {
+    token = token_iter_next(iter);
+    (iter->cursor)--;
+  } else {
+    token.type = T_EOF;
+    token.value = NULL;
+  }
+  return token;
+}
