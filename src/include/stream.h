@@ -1,13 +1,15 @@
-#ifndef _INC_STDIO
-  #include <stdio.h>
-#endif
+#ifndef STREAM_H
 
-/**
- * Peeks the next character in the stream.
- * Does not move the cursor forward.
-**/
-int fpeekc(FILE *stream) {
-  int c = fgetc(stream);
-  ungetc(c, stream);
-  return c;
-}
+  #define STREAM_H
+
+  #ifndef _INC_STDIO
+    #include <stdio.h>
+  #endif
+
+  /**
+   * Peeks the next character in the stream.
+   * Does not move the cursor forward.
+  **/
+  int fpeekc(FILE *stream);
+
+#endif

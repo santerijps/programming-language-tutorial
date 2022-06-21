@@ -1,5 +1,8 @@
+CC = tcc -o bin/pltc.exe
+LINK = src/lex.c src/stream.c src/token.c src/validators.c
+
 build: bin
-	tcc src/pltc.c -o bin/pltc.exe
+	$(CC) src/pltc.c $(LINK)
 
 init:
 	mkdir bin

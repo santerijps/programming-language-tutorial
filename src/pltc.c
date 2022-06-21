@@ -18,6 +18,7 @@ int main(int argc, char **argv) {
 
   for (int i = 0; i < lex_result.token_count; i++) {
     token_print(lex_result.token_list[i]);
+    free(lex_result.token_list[i].value);
   }
 
 }
