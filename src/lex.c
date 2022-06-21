@@ -195,6 +195,7 @@ char* _read_string_token(FILE *stream) {
     if (c == '"') {
       if (backslash) {
         token[i - 1] = '"';
+        backslash = 0;
         continue;
       } else {
         break;
