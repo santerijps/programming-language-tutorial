@@ -2,7 +2,7 @@ TCC = tcc -o bin/pltc.exe
 GCC = gcc -o bin/pltc.gcc.exe
 LINK = src/lex.c src/stream.c src/token.c src/validators.c
 
-build: bin
+tcc: bin
 	$(TCC) src/pltc.c $(LINK)
 
 gcc: bin
