@@ -48,7 +48,7 @@
   /**
    * Creates a new token.
   */
-  TOKEN token_new(TOKEN_TYPE type, char *value);
+  inline TOKEN token_new(TOKEN_TYPE type, char *value);
 
   /**
    * Prints the specified token.
@@ -60,6 +60,7 @@
     TOKEN *items;
   } TOKEN_ITER;
 
+  TOKEN_ITER token_iter_new(size_t size, TOKEN *items);
   int token_iter_has_next(TOKEN_ITER *iter);
   TOKEN token_iter_next(TOKEN_ITER *iter);
   TOKEN token_iter_peek(TOKEN_ITER *iter);

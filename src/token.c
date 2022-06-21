@@ -52,6 +52,14 @@ void token_print(TOKEN t) {
   printf("' }\n");
 }
 
+inline TOKEN_ITER token_iter_new(size_t size, TOKEN *items) {
+  TOKEN_ITER iter;
+  iter.cursor = 0;
+  iter.size = size;
+  iter.items = items;
+  return iter;
+}
+
 int token_iter_has_next(TOKEN_ITER *iter) {
   return (iter->cursor) < (iter->size);
 }
