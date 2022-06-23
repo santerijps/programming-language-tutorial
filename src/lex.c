@@ -136,10 +136,14 @@ LEX_RESULT lex_file(char *src_file) {
 
   }
 
+  if (ferror(stream) > 0) {
+    printf("Stream reading finished with error code: %d\n", ferror(stream));
+    result.exit_code = ferror(stream);
+  }
+
   if (fclose(stream)) {
     printf("Could not close the file successfully!\n");
     result.exit_code = 1;
-    return result;
   }
 
   return result;
