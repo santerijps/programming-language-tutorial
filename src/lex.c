@@ -6,7 +6,7 @@ LEX_RESULT lex_file(char *src_file) {
 
   FILE *stream;
   LEX_RESULT result;
-  size_t token_list_size = 100;
+  size_t token_list_size = 1000;
   char c, *token_value;
   TOKEN_TYPE token_type;
 
@@ -131,7 +131,7 @@ LEX_RESULT lex_file(char *src_file) {
 
     if (result.token_count == token_list_size) {
       token_list_size *= 2;
-      result.token_list = (TOKEN*) realloc(result.token_list, token_list_size);
+      result.token_list = (TOKEN*) realloc(result.token_list, sizeof(TOKEN) * token_list_size);
     }
 
   }
