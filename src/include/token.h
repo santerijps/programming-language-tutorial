@@ -40,7 +40,7 @@
   */
   char* token_type_name(TOKEN_TYPE t);
 
-  typedef struct {
+  typedef struct TOKEN {
     TOKEN_TYPE type;
     char *value;
   } TOKEN;
