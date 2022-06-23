@@ -6,7 +6,7 @@ LEX_RESULT lex_file(char *src_file) {
 
   FILE *stream;
   LEX_RESULT result;
-  size_t n, token_list_size = 100, token_list_index = 0;
+  size_t token_list_size = 100;
   char c, *token_value;
   TOKEN_TYPE token_type;
 
@@ -148,7 +148,7 @@ LEX_RESULT lex_file(char *src_file) {
 
 char* _read_token_until_invalid(FILE *stream, int char_validator(char)) {
 
-  unsigned int i = 0, size = 10;
+  unsigned int i = 0, j, size = 10;
   char c, *token = (char*) malloc(sizeof(char) * size);
   memset(token, '\0', size);
 
@@ -160,7 +160,7 @@ char* _read_token_until_invalid(FILE *stream, int char_validator(char)) {
     if (i == size) {
       size *= 2;
       token = (char*) realloc(token, sizeof(char) * size);
-      for (int j = i; j < size; j++) token[j] = '\0';
+      for (j = i; j < size; j++) token[j] = '\0';
     }
 
   }
@@ -181,7 +181,7 @@ char* _read_token_until_invalid(FILE *stream, int char_validator(char)) {
 
 char* _read_string_token(FILE *stream) {
 
-  unsigned int i = 0, size = 10, backslash = 0;
+  unsigned int i = 0, j, size = 10, backslash = 0;
   char c, *token = (char*) malloc(sizeof(char) * size);
   memset(token, '\0', size);
 
@@ -209,7 +209,7 @@ char* _read_string_token(FILE *stream) {
     if (i == size) {
       size *= 2;
       token = (char*) realloc(token, sizeof(char) * size);
-      for (int j = i; j < size; j++) token[j] = '\0';
+      for (j = i; j < size; j++) token[j] = '\0';
     }
 
   }
