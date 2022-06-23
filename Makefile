@@ -8,5 +8,5 @@ tcc: bin
 gcc: bin
 	$(GCC) src/pltc.c $(LINK)
 
-init:
+bin:
 	mkdir bin
