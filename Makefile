@@ -1,5 +1,5 @@
-TCC = tcc -o bin/pltc.exe
-GCC = gcc -o bin/pltc.gcc.exe
+TCC = tcc -Wall -Wextra -o bin/pltc.exe
+GCC = gcc -Wall -Wextra -o bin/pltc.gcc.exe
 LINK = src/lex.c src/stream.c src/token.c src/validators.c
 
 tcc: bin
