@@ -18,7 +18,7 @@
 
   #define LEX_H
 
-  typedef struct {
+  typedef struct LEX_RESULT {
     TOKEN *token_list;
     size_t token_count;
     int exit_code;
