@@ -9,6 +9,7 @@ LEX_RESULT lex_file(char *src_file) {
   size_t token_list_size = 1000;
   char c, *token_value;
   TOKEN_TYPE token_type;
+  int file_error;
 
   result.token_list = (TOKEN*) calloc(token_list_size, sizeof(TOKEN));
   result.token_count = 0;
@@ -136,9 +137,9 @@ LEX_RESULT lex_file(char *src_file) {
 
   }
 
-  if (ferror(stream) > 0) {
-    printf("Stream reading finished with error code: %d\n", ferror(stream));
-    result.exit_code = ferror(stream);
+  if ((file_error = ferror(stream)) > 0) {
+    printf("Stream reading finished with error code: %d\n", file_error);
+    result.exit_code = file_error;
   }
 
   if (fclose(stream)) {
