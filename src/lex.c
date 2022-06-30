@@ -126,7 +126,7 @@ LEX_RESULT lex_file(char *src_file) {
       token_value = _read_single_char_token(stream);
     }
 
-    TOKEN token = token_new(token_type,token_value);
+    TOKEN token = token_new(token_type, token_value);
     result.token_list[result.token_count++] = token;
 
     if (result.token_count == token_list_size) {
