@@ -34,7 +34,7 @@ void token_destroy(TOKEN *t) {
 }
 
 void token_print(TOKEN t) {
-  printf("TOKEN{ %s, '", token_type_name(t.type));
+  printf("TOKEN { %s, '", token_type_name(t.type));
   for (int i = 0; t.value[i] != '\0'; i++) {
     switch (t.value[i]) {
       case ' ':
